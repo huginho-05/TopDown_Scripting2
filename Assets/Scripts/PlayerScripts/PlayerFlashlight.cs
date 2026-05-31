@@ -8,6 +8,7 @@ public class PlayerFlashlight : MonoBehaviour
     [Header("Linterna")]
     [SerializeField] private Light flashlight;
     [SerializeField] private Collider flashlightCollider;
+    [SerializeField] private GameObject flashlightChild;
 
     [SerializeField] private int maxCharges;
     [SerializeField] private float flashDuration = 1f;
@@ -55,11 +56,13 @@ public class PlayerFlashlight : MonoBehaviour
 
         flashlight.enabled = true;
         flashlightCollider.enabled = true;
+        flashlightChild.SetActive(true);
 
         yield return new WaitForSeconds(flashDuration);
 
         flashlight.enabled = false;
         flashlightCollider.enabled = false;
+        flashlightChild.SetActive(false);
 
         isFlashing = false;
     }
