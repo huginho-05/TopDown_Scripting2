@@ -4,11 +4,11 @@ using TMPro;
 
 public class HoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    [Header("Referencia")]
+    [Header("Texto")]
     public TextMeshProUGUI texto;
 
-    [Header("Estado Hover (editable en Inspector)")]
-    public Color colorHover = Color.yellow;
+    [Header("Hover")]
+    public Color colorHover;
     public Vector3 escalaHover = new Vector3(1.2f, 1.2f, 1f);
 
     private Color colorOriginal;
