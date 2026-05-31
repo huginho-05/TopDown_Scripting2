@@ -3,19 +3,19 @@ using UnityEngine;
 public class Door : MonoBehaviour
 {
     public KeySO requiredKey;
-    public GameObject promptText;
+    public GameObject text;
 
-    private bool playerNearby;
+    private bool playerNear;
     private PlayerInventory playerInventory;
 
     private void Start()
     {
-        if (promptText != null) promptText.SetActive(false);
+        if (text != null) text.SetActive(false);
     }
 
     private void Update()
     {
-        if (!playerNearby) return;
+        if (!playerNear) return;
 
         if (Input.GetKeyDown(KeyCode.E))
         {
@@ -33,9 +33,9 @@ public class Door : MonoBehaviour
         if (inventory == null) return;
 
         playerInventory = inventory;
-        playerNearby = true;
+        playerNear = true;
 
-        if (promptText != null) promptText.SetActive(true);
+        if (text != null) text.SetActive(true);
     }
 
     public void PlayerExited(Collider other)
@@ -44,14 +44,14 @@ public class Door : MonoBehaviour
 
         if (inventory == null) return;
 
-        playerNearby = false;
+        playerNear = false;
 
-        if (promptText != null) promptText.SetActive(false);
+        if (text != null) text.SetActive(false);
     }
 
     private void OpenDoor()
     {
-        if (promptText != null) promptText.SetActive(false);
+        if (text != null) text.SetActive(false);
 
         Destroy(gameObject);
     }

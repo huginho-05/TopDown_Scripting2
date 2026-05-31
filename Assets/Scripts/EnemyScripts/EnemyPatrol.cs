@@ -5,11 +5,9 @@ using System.Collections;
 public class EnemyPatrol : MonoBehaviour
 {
     public Transform[] patrolPoints;
-
-    [Header("Movimiento")]
+    
     public float moveSpeed = 2f;
-
-    [Header("Espera")]
+    
     public float waitTime = 2f;
 
     private NavMeshAgent agent;
@@ -19,8 +17,7 @@ public class EnemyPatrol : MonoBehaviour
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-
-        // Velocidad del NPC
+        
         agent.speed = moveSpeed;
 
         if (patrolPoints.Length > 0)
@@ -45,12 +42,12 @@ public class EnemyPatrol : MonoBehaviour
     {
         waiting = true;
 
-        // Detiene el movimiento
+        // Fantasma para un tiempo al llegar al punto
         agent.isStopped = true;
 
         yield return new WaitForSeconds(waitTime);
 
-        // Siguiente punto
+        // Fantasma viaja al siguiente punto
         currentPoint = (currentPoint + 1) % patrolPoints.Length;
 
         agent.SetDestination(patrolPoints[currentPoint].position);

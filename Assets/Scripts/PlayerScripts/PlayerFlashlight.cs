@@ -5,11 +5,11 @@ using System.Collections;
 
 public class PlayerFlashlight : MonoBehaviour
 {
-    [Header("Flashlight")]
+    [Header("Linterna")]
     [SerializeField] private Light flashlight;
     [SerializeField] private Collider flashlightCollider;
 
-    [SerializeField] private int maxCharges = 6;
+    [SerializeField] private int maxCharges;
     [SerializeField] private float flashDuration = 1f;
 
     [Header("UI")]
@@ -36,6 +36,7 @@ public class PlayerFlashlight : MonoBehaviour
         }
     }
 
+    // Disparar linterna
     private void FireFlashlight()
     {
         if (isFlashing) return;
@@ -47,6 +48,7 @@ public class PlayerFlashlight : MonoBehaviour
         StartCoroutine(FlashRoutine());
     }
 
+    // Comportamiento linterna
     private IEnumerator FlashRoutine()
     {
         isFlashing = true;
@@ -62,6 +64,7 @@ public class PlayerFlashlight : MonoBehaviour
         isFlashing = false;
     }
 
+    // Matar fantasma
     private void OnTriggerEnter(Collider other)
     {
         GhostEnemy ghost = other.GetComponentInParent<GhostEnemy>();
@@ -72,6 +75,7 @@ public class PlayerFlashlight : MonoBehaviour
         }
     }
 
+    // Recoger pila añade una recarga
     public void AddCharge(int amount)
     {
         currentCharges = Mathf.Min(currentCharges + amount, maxCharges);

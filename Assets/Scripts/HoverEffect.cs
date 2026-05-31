@@ -7,7 +7,7 @@ public class HoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     [Header("Texto")]
     public TextMeshProUGUI texto;
 
-    [Header("Hover")]
+    [Header("Efecto hover")]
     public Color colorHover;
     public Vector3 escalaHover = new Vector3(1.2f, 1.2f, 1f);
 
@@ -23,6 +23,7 @@ public class HoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         }
     }
 
+    // Pasar raton por encima
     public void OnPointerEnter(PointerEventData eventData)
     {
         if (texto == null) return;
@@ -31,6 +32,7 @@ public class HoverEffect : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
         texto.transform.localScale = escalaHover;
     }
 
+    // Dejar de pasar raton por encima
     public void OnPointerExit(PointerEventData eventData)
     {
         if (texto == null) return;
