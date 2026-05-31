@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class PlayerFlashlight : MonoBehaviour
 {
@@ -7,6 +8,8 @@ public class PlayerFlashlight : MonoBehaviour
     [SerializeField] private Light flashlight;
     [SerializeField] private float range = 15f;
     [SerializeField] private int maxCharges = 6;
+    
+    [SerializeField] private TMP_Text batteryText;
 
     private int currentCharges;
 
@@ -16,6 +19,8 @@ public class PlayerFlashlight : MonoBehaviour
 
         if (flashlight != null)
             flashlight.enabled = false;
+        
+        UpdateUI();
     }
 
     private void Update()
@@ -52,13 +57,16 @@ public class PlayerFlashlight : MonoBehaviour
                 ghost.Die();
             }
         }
+        
+        currentCharges--;
+        UpdateUI();
     }
 
     private System.Collections.IEnumerator FlashRoutine()
     {
         flashlight.enabled = true;
 
-        yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSeconds(1f);
 
         flashlight.enabled = false;
     }
@@ -69,10 +77,17 @@ public class PlayerFlashlight : MonoBehaviour
             currentCharges + amount,
             maxCharges
         );
+        
+        UpdateUI();
     }
 
     public int GetCharges()
     {
         return currentCharges;
+    }
+    
+    private void UpdateUI()
+    {
+        batteryText.text = "" + currentCharges;
     }
 }
