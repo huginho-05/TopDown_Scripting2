@@ -1,25 +1,30 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using System.Collections;
 
 public class PlayerFlashlight : MonoBehaviour
 {
     [Header("Flashlight")]
     [SerializeField] private Light flashlight;
-    [SerializeField] private float range = 15f;
+    [SerializeField] private Collider flashlightCollider;
+
     [SerializeField] private int maxCharges = 6;
-    
+    [SerializeField] private float flashDuration = 1f;
+
+    [Header("UI")]
     [SerializeField] private TMP_Text batteryText;
 
     private int currentCharges;
+    private bool isFlashing;
 
     private void Start()
     {
         currentCharges = maxCharges;
 
-        if (flashlight != null)
-            flashlight.enabled = false;
-        
+        flashlight.enabled = false;
+        flashlightCollider.enabled = false;
+
         UpdateUI();
     }
 
@@ -33,61 +38,49 @@ public class PlayerFlashlight : MonoBehaviour
 
     private void FireFlashlight()
     {
-        if (currentCharges <= 0)
-        {
-            Debug.Log("Sin batería");
-            return;
-        }
+        if (isFlashing) return;
+        if (currentCharges <= 0) return;
 
-        currentCharges--;
-
-        StartCoroutine(FlashRoutine());
-
-        Ray ray = new Ray(
-            flashlight.transform.position,
-            flashlight.transform.forward
-        );
-
-        if (Physics.Raycast(ray, out RaycastHit hit, range))
-        {
-            GhostEnemy ghost = hit.collider.GetComponent<GhostEnemy>();
-
-            if (ghost != null)
-            {
-                ghost.Die();
-            }
-        }
-        
         currentCharges--;
         UpdateUI();
+
+        StartCoroutine(FlashRoutine());
     }
 
-    private System.Collections.IEnumerator FlashRoutine()
+    private IEnumerator FlashRoutine()
     {
-        flashlight.enabled = true;
+        isFlashing = true;
 
-        yield return new WaitForSeconds(1f);
+        flashlight.enabled = true;
+        flashlightCollider.enabled = true;
+
+        yield return new WaitForSeconds(flashDuration);
 
         flashlight.enabled = false;
+        flashlightCollider.enabled = false;
+
+        isFlashing = false;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        GhostEnemy ghost = other.GetComponentInParent<GhostEnemy>();
+
+        if (ghost != null && flashlight.enabled)
+        {
+            ghost.Die();
+        }
     }
 
     public void AddCharge(int amount)
     {
-        currentCharges = Mathf.Min(
-            currentCharges + amount,
-            maxCharges
-        );
-        
+        currentCharges = Mathf.Min(currentCharges + amount, maxCharges);
         UpdateUI();
     }
 
-    public int GetCharges()
-    {
-        return currentCharges;
-    }
-    
     private void UpdateUI()
     {
-        batteryText.text = "" + currentCharges;
+        if (batteryText != null)
+            batteryText.text = currentCharges.ToString();
     }
 }
