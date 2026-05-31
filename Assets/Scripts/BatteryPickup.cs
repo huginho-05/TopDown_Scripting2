@@ -4,12 +4,15 @@ public class BatteryPickup : MonoBehaviour
 {
     private void OnTriggerEnter(Collider other)
     {
-        PlayerFlashlight flashlight = other.GetComponent<PlayerFlashlight>();
-
-        if (flashlight != null)
+        if (other.CompareTag("Player"))
         {
-            flashlight.AddCharge(1);
-            Destroy(gameObject);
+            PlayerFlashlight flashlight = FindFirstObjectByType<PlayerFlashlight>();
+
+            if (flashlight != null)
+            {
+                flashlight.AddCharge(1);
+                Destroy(gameObject);
+            }
         }
     }
 }
